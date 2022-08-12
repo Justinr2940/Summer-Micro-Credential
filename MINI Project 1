@@ -1,0 +1,46 @@
+-- creating videos table
+-- table has an unique ID, the title of the video, the length in minutes, and the URL.
+CREATE TABLE videos (
+video_id integer UNIQUE NOT NULL,
+title VARCHAR(255) NOT NULL,
+length_in_min integer,
+URL VARCHAR(255) NOT NULL,
+CONSTRAINT video_id_pkey PRIMARY KEY (video_id)
+);
+
+-- populating the table
+INSERT INTO VIDEOS VALUES(0123, 'Real Madrid vs. Eintracht Frankfurt: Extended Highlights | UEFA Super Cup | CBS Sports Golazo', 9, 'https://www.youtube.com/watch?v=RfKeyQgnm9o');
+INSERT INTO VIDEOS VALUES(0124, 'Neil Patrick Harris Needs Magic to Escape Spicy Wings | Hot Ones', 25, 'https://www.youtube.com/watch?v=q4CpcZjayh4');
+INSERT INTO VIDEOS VALUES(0125, 'HIGHLIGHTS: MLS All-Stars vs. Liga MX All-Stars | August 10, 2022', 8, 'https://www.youtube.com/watch?v=uYa8nO8UEzU');
+INSERT INTO VIDEOS VALUES(0126, 'Splatoon 3 Direct - Nintendo Switch', 32, 'https://www.youtube.com/watch?v=aiuIZN0KDFQ');
+-- checking if data corrected inserted
+SELECT * FROM videos;
+
+-- creating reviewers table
+-- should include user’s name (“Asher”, “John”, etc.), rating (which could be NULL, or a number between 0 and 5), and a short text review and ID column 
+-- resource used: https://www.w3schools.com/sql/sql_check.asp
+CREATE TABLE reviewers (
+video_id integer UNIQUE NOT NULL,
+user_name VARCHAR(255) NOT NULL,
+rating integer,
+text_review VARCHAR(255) NOT NULL,
+CHECK (rating >= 0 AND rating <= 5),
+CONSTRAINT video_id_fkey FOREIGN KEY (video_id)
+   REFERENCES public.videos (video_id) MATCH SIMPLE
+   ON UPDATE NO ACTION
+   ON DELETE NO ACTION
+ );
+
+-- populating the table
+INSERT INTO REVIEWERS VALUES(0123, 'Manuel Silva', 5, 'Real Madrid collecting trophies as usual. It looks like there not excited anymore with so many trophy wins.');
+INSERT INTO REVIEWERS VALUES(0124, 'Angie Dudas', 5, 'It’s crazy to feel like I grew up and older with Neil. I remember him being Doogie and now he is a dad and closer to 50 like me. Time is weird.');
+INSERT INTO REVIEWERS VALUES(0125, 'Eph Jissay', 5, 'That shows the increasing level of MLS , now teams need to focus on defensive aspect');
+INSERT INTO REVIEWERS VALUES(0126, 'Sophia Miller', 5, 'I know this will get overlooked, but I really wanna give props to the announcer, she did a fantastic job and put so much energy into the announcement, it honestly made me pretty hyped');
+
+-- checking if data was inserted correctly
+SELECT * FROM reviewers;
+
+-- JOIN statement that shows information from both tables
+SELECT * FROM videos
+LEFT JOIN reviewers
+ON videos.video_id = reviewers.video_id
