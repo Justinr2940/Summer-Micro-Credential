@@ -1,1 +1,2 @@
-Micro-Credential
+Data analytics projects written in python
+
